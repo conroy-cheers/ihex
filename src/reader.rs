@@ -159,7 +159,7 @@ impl Record {
         }
 
         match record_type {
-            types::DATA => {
+            types::DATA | types::DATA_END => {
                 // A Data record consists of an address and payload bytes.
                 Ok(Record::Data {
                     offset: address,

@@ -65,6 +65,7 @@ impl Record {
 pub mod types {
     /// Type specifier for a Data record.
     pub const DATA: u8 = 0x00;
+    pub const DATA_END: u8 = 0x10;
     /// Type specifier for an End-Of-File record.
     pub const END_OF_FILE: u8 = 0x01;
     /// Type specifier for an Extended Segment Address record.
