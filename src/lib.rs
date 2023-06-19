@@ -17,8 +17,10 @@ mod checksum;
 mod reader;
 mod record;
 mod writer;
+mod hextobin;
 
 pub use checksum::*;
 pub use reader::*;
 pub use record::*;
 pub use writer::*;
+pub use hextobin::*;
