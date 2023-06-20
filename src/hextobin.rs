@@ -9,6 +9,11 @@
 
 use crate::record::Record;
 
+pub struct BinaryData {
+    pub data: Vec<u8>,
+    pub start_address: usize,
+}
+
 struct AbsoluteRecord<'a> {
     data: &'a [u8],
     start_address: usize,
@@ -84,8 +89,8 @@ fn get_address_space(records: &[Record]) -> (usize, usize) {
 
 /// Converts a vector of Records into bytes.
 /// Unused bytes are filled with 0xFF.
-pub fn convert_to_bytes(records: &[Record]) -> Vec<u8> {
-    let (_, end) = get_address_space(records);
+pub fn convert_to_bytes(records: &[Record]) -> BinaryData {
+    let (start, end) = get_address_space(records);
     let mut bytes = vec![0xFF; end];
 
     for record in DataRecordIterator::from(records) {
@@ -94,5 +99,8 @@ pub fn convert_to_bytes(records: &[Record]) -> Vec<u8> {
         bytes[start..end].copy_from_slice(record.data);
     }
 
-    bytes
+    BinaryData {
+        data: bytes,
+        start_address: start,
+    }
 }
