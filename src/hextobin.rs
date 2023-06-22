@@ -90,14 +90,17 @@ fn get_address_space(records: &[Record]) -> (usize, usize) {
 
 /// Converts a vector of Records into bytes.
 /// Unused bytes are filled with 0xFF.
-pub fn convert_to_bytes(records: &[Record]) -> BinaryData {
+/// Any records beginning below min_address will be ignored.
+pub fn convert_to_bytes(records: &[Record], min_address: usize) -> BinaryData {
     let (space_start, space_end) = get_address_space(records);
     let mut bytes = vec![0xFF; space_end - space_start];
 
     for record in DataRecordIterator::from(records) {
         let start = record.start_address - space_start;
         let end = start + record.data.len();
-        bytes[start..end].copy_from_slice(record.data);
+        if start >= min_address {
+            bytes[start..end].copy_from_slice(record.data);
+        }
     }
 
     BinaryData {
